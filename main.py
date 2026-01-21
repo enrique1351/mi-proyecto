@@ -12,15 +12,13 @@ Fecha: 2025-01-17
 """
 
 import sys
+import io
 import logging
 import time
 import argparse
 from pathlib import Path
 from datetime import datetime
 from typing import Optional
-
-import sys
-import io
 
 
 if sys.platform == 'win32':
