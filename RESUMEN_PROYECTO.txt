@@ -1,0 +1,669 @@
+# RESUMEN DETALLADO DEL SISTEMA DE TRADING - Para Futuras Conversaciones
+
+## 📋 INFORMACIÓN GENERAL
+
+**Nombre del Proyecto**: Quant Trading System (Sistema de Trading Cuantitativo Universal)
+**Versión**: 1.0.0
+**Lenguaje**: Python 3.10+
+**Estado**: En Desarrollo Activo
+**Repositorio**: https://github.com/enrique1351/mi-proyecto
+
+## 🎯 OBJETIVO DEL SISTEMA
+
+Crear un bot de trading completamente automatizado, modular, escalable y seguro que:
+- Opera 24/7 en múltiples mercados (crypto, acciones, forex)
+- Se adapta automáticamente a condiciones de mercado
+- Gestiona riesgo de forma inteligente
+- Utiliza IA y ML para optimización continua
+- Envía notificaciones en tiempo real
+- Es desplegable en VPS/Cloud para operación continua
+
+## 🏗️ ARQUITECTURA DEL SISTEMA
+
+### Estructura de Directorios Principal
+
+```
+mi-proyecto/
+├── shared/core/              # Módulos core del sistema
+│   ├── ai/                   # AI Auditor
+│   ├── analysis/             # Market regime detection
+│   ├── backtesting/          # Backtesting engine
+│   ├── brokers/              # Binance y brokers principales
+│   ├── config/               # Configuración y constantes
+│   ├── data/                 # Data management (ingestion, storage)
+│   ├── execution/            # Execution interface y órdenes
+│   ├── monitoring/           # System reporter y monitoreo
+│   ├── risk/                 # Risk manager y portfolio optimizer
+│   ├── security/             # Credential vault y seguridad
+│   └── strategies/           # Strategy engine y adaptive manager
+│
+├── trading/                  # NUEVO: Módulo de trading
+│   ├── __init__.py
+│   ├── alpaca_broker.py      # Integración Alpaca (acciones/ETFs)
+│   ├── forex_broker.py       # Integración Oanda (forex)
+│   └── broker_manager.py     # Gestor unificado de brokers
+│
+├── notifications/            # NUEVO: Sistema de notificaciones
+│   ├── __init__.py
+│   ├── notification_manager.py    # Manager principal
+│   ├── telegram_notifier.py       # Telegram Bot API
+│   ├── email_notifier.py          # Email SMTP
+│   ├── sms_notifier.py            # Twilio SMS
+│   └── pushbullet_notifier.py     # Pushbullet
+│
+├── machine_learning/         # NUEVO: Módulo de ML
+│   ├── __init__.py
+│   ├── time_series_models.py      # LSTM, ARIMA
+│   └── nlp_analyzer.py            # BERT, sentiment analysis
+│
+├── data_processing/          # NUEVO: Procesamiento de datos
+│   └── __init__.py
+│
+├── data/                     # Datos persistentes
+│   ├── db/                   # SQLite databases
+│   ├── logs/                 # Log files
+│   └── cache/                # Cache temporal
+│
+├── tests/                    # Tests unitarios
+│   └── unit/
+│
+├── docker/                   # Configuraciones Docker
+│
+├── main.py                   # Punto de entrada principal
+├── requirements.txt          # Dependencias Python
+├── Dockerfile               # Imagen Docker
+├── docker-compose.prod.yml  # Deployment producción
+├── .env.example             # Template de configuración
+├── .gitignore              # Git ignore
+└── README.md               # Documentación principal
+```
+
+## 🔧 MÓDULOS IMPLEMENTADOS
+
+### 1. MÓDULOS CORE (shared/core/)
+
+#### Data Management (shared/core/data/)
+- **data_manager.py**: Gestión de datos con SQLite
+- **data_ingestion.py**: Ingesta de datos de múltiples fuentes
+- **database_manager.py**: Manager de base de datos
+- **websocket_manager.py**: WebSocket para datos en tiempo real
+
+#### Strategy Engine (shared/core/strategies/)
+- **strategy_engine.py**: Motor de estrategias
+- **adaptive_strategy_manager.py**: Adaptación automática de estrategias
+
+#### Risk Management (shared/core/risk/)
+- **risk_manager.py**: Gestión de riesgo, drawdown, position sizing
+- **portfolio_optimizer.py**: Optimización de portfolio
+
+#### Execution (shared/core/execution/)
+- **execution_interface.py**: Interface de ejecución de órdenes
+- **advanced_orders.py**: Órdenes avanzadas (stop-loss, take-profit, trailing)
+
+#### Security (shared/core/security/)
+- **credential_vault.py**: Almacenamiento encriptado de credenciales
+
+#### AI (shared/core/ai/)
+- **ai_auditor.py**: Auditoría inteligente del sistema
+
+#### Analysis (shared/core/analysis/)
+- **market_regime.py**: Detección de régimen de mercado (trending, ranging, volatile)
+
+#### Brokers (shared/core/brokers/)
+- **brokers.py**: Factory de brokers, MockBroker, integración Binance
+
+#### Monitoring (shared/core/monitoring/)
+- **system_reporter.py**: Generación de reportes y métricas
+
+### 2. MÓDULO TRADING (trading/)
+
+#### Alpaca Broker (trading/alpaca_broker.py)
+**Funcionalidad**:
+- Conexión con Alpaca Markets API
+- Trading de acciones US y ETFs
+- Soporta paper y live trading
+- Órdenes: market, limit, stop, stop_limit
+- Gestión de posiciones
+
+**Métodos principales**:
+- `get_account()`: Info de cuenta
+- `get_positions()`: Posiciones abiertas
+- `place_order()`: Colocar orden
+- `cancel_order()`: Cancelar orden
+- `get_bars()`: Datos históricos
+- `close_position()`: Cerrar posición
+
+#### Oanda/Forex Broker (trading/forex_broker.py)
+**Funcionalidad**:
+- Conexión con Oanda v20 API
+- Trading de pares forex (EUR/USD, GBP/USD, etc.)
+- CFDs
+- Practice y live accounts
+
+**Métodos principales**:
+- `get_account()`: Info de cuenta
+- `get_positions()`: Posiciones
+- `place_order()`: Colocar orden con TP/SL
+- `get_historical_data()`: Datos históricos
+- `close_position()`: Cerrar posición
+
+#### Broker Manager (trading/broker_manager.py)
+**Funcionalidad**:
+- Gestión unificada de múltiples brokers
+- Interface común para todos los brokers
+- Health check de brokers
+
+**Brokers soportados**:
+- Binance (crypto)
+- Alpaca (stocks)
+- Oanda (forex)
+- Interactive Brokers (futuro)
+- Coinbase (futuro)
+
+### 3. MÓDULO NOTIFICATIONS (notifications/)
+
+#### Notification Manager (notifications/notification_manager.py)
+**Funcionalidad**:
+- Gestión centralizada de notificaciones
+- Soporte para múltiples canales
+- Niveles de notificación (INFO, WARNING, ERROR, CRITICAL)
+- Templates para alertas comunes
+
+**Canales soportados**:
+- Telegram
+- Email
+- SMS
+- Pushbullet
+
+**Métodos principales**:
+- `send()`: Enviar notificación
+- `send_trade_alert()`: Alerta de trade
+- `send_error_alert()`: Alerta de error
+- `send_daily_summary()`: Resumen diario
+- `health_check()`: Estado de canales
+
+#### Telegram Notifier (notifications/telegram_notifier.py)
+- Envío de mensajes vía Telegram Bot API
+- Soporta emojis según nivel de prioridad
+- Envío de documentos y fotos
+
+#### Email Notifier (notifications/email_notifier.py)
+- Envío vía SMTP
+- Soporta HTML y texto plano
+- Compatible con Gmail, Outlook, etc.
+
+#### SMS Notifier (notifications/sms_notifier.py)
+- Envío de SMS vía Twilio
+- Truncado automático a 160 caracteres
+
+#### Pushbullet Notifier (notifications/pushbullet_notifier.py)
+- Push notifications vía Pushbullet API
+- Soporta links y notas
+
+### 4. MÓDULO MACHINE LEARNING (machine_learning/)
+
+#### Time Series Models (machine_learning/time_series_models.py)
+**Modelos implementados**:
+
+1. **LSTM Predictor**
+   - Red neuronal LSTM para predicción de precios
+   - Arquitectura: 3 capas LSTM + Dropout + Dense
+   - Optimizador: Adam
+   - Loss: MSE
+   - Métodos: `train()`, `predict()`, `save()`, `load()`
+
+2. **ARIMA Predictor**
+   - Modelo ARIMA clásico para series temporales
+   - Configurable (p, d, q)
+   - Métodos: `train()`, `predict()`, `save()`, `load()`
+
+#### NLP Analyzer (machine_learning/nlp_analyzer.py)
+**Componentes**:
+
+1. **NewsAnalyzer**
+   - Análisis de sentimiento con FinBERT
+   - Named Entity Recognition (NER)
+   - Agregación de sentimiento de mercado
+   - Métodos:
+     - `analyze_sentiment()`: Analizar un texto
+     - `analyze_news_batch()`: Batch de noticias
+     - `extract_entities()`: Extraer entidades
+     - `get_market_sentiment()`: Sentimiento general
+
+2. **NewsAggregator**
+   - Obtención de noticias de múltiples fuentes
+   - APIs: CryptoPanic, NewsAPI
+   - Métodos:
+     - `fetch_crypto_news()`: Noticias crypto
+     - `fetch_stock_news()`: Noticias de acciones
+
+## 📦 DEPENDENCIAS PRINCIPALES
+
+### Core Dependencies
+- numpy==1.24.3
+- pandas==2.0.3
+- scipy==1.11.1
+
+### Data & APIs
+- requests==2.31.0
+- ccxt==4.0.0 (crypto exchanges)
+- yfinance==0.2.28
+
+### Databases
+- SQLAlchemy==2.0.19
+- psycopg2-binary==2.9.7
+- redis==4.6.0
+
+### Technical Analysis
+- ta-lib==0.4.28
+- pandas-ta==0.3.14b0
+
+### Machine Learning
+- scikit-learn==1.3.0
+- tensorflow==2.13.0
+- torch==2.0.1
+- statsmodels==0.14.0
+
+### Broker APIs
+- alpaca-trade-api==3.0.2
+- oandapyV20==0.7.2
+
+### Notifications
+- twilio==8.10.0
+
+### NLP
+- transformers==4.35.0
+- sentencepiece==0.1.99
+
+### Security
+- cryptography==41.0.3
+- pycryptodome==3.18.0
+
+### Utils
+- python-dotenv==1.0.0
+- pyyaml==6.0.1
+- tqdm==4.66.1
+- schedule==1.2.0
+
+## 🔐 CONFIGURACIÓN (.env)
+
+### Variables de Entorno Principales
+
+```bash
+# Crypto Exchanges
+BINANCE_API_KEY=
+BINANCE_API_SECRET=
+
+# Stock Brokers
+ALPACA_API_KEY=
+ALPACA_API_SECRET=
+ALPACA_BASE_URL=https://paper-api.alpaca.markets
+
+# Forex Brokers
+OANDA_API_KEY=
+OANDA_ACCOUNT_ID=
+OANDA_PRACTICE=true
+
+# Notifications
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASSWORD=
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_FROM_NUMBER=
+TWILIO_TO_NUMBER=
+PUSHBULLET_TOKEN=
+
+# Security
+VAULT_SECRET=
+
+# System
+ENVIRONMENT=local
+LOG_LEVEL=INFO
+TRADING_MODE=paper
+INITIAL_CAPITAL=10000
+```
+
+## 🚀 DEPLOYMENT
+
+### Local Development
+```bash
+python main.py --mode paper --capital 10000 --cycles 10
+```
+
+### Docker
+```bash
+docker build -t trading-bot .
+docker run -d --env-file .env trading-bot
+```
+
+### Docker Compose (Producción)
+```bash
+docker-compose -f docker-compose.prod.yml up -d
+```
+
+### VPS (DigitalOcean/AWS)
+1. Crear VPS Ubuntu 22.04
+2. Instalar Docker
+3. Clonar repo
+4. Configurar .env
+5. Deploy con docker-compose
+
+### Ejecutable (PyInstaller)
+```bash
+pyinstaller --onefile main.py
+# Ejecutable en dist/
+```
+
+## 📊 FLUJO DE EJECUCIÓN
+
+### Ciclo Principal (main.py -> QuantTradingSystem.run_single_cycle())
+
+1. **Verificar Kill-Switch**
+   - Revisar si el sistema debe detenerse
+
+2. **Ingerir Datos**
+   - Obtener datos de mercado actualizados
+   - Actualizar base de datos
+
+3. **Detectar Régimen de Mercado**
+   - Analizar volatilidad, tendencia
+   - Clasificar: trending, ranging, volatile
+
+4. **Generar Señales**
+   - Strategy Engine genera señales crudas
+   - Múltiples estrategias en paralelo
+
+5. **Adaptar Señales**
+   - Adaptive Manager ajusta según régimen
+   - Considera performance histórica
+
+6. **Filtrar por Riesgo**
+   - Risk Manager valida señales
+   - Verifica: drawdown, exposición, correlación
+
+7. **Ejecutar Órdenes**
+   - Execution Interface coloca órdenes
+   - Routing a broker apropiado
+
+8. **Auditoría IA**
+   - AI Auditor revisa decisiones
+   - Detecta anomalías
+
+9. **Notificaciones**
+   - Enviar alertas de trades
+   - Reportar errores si existen
+
+10. **Actualizar Métricas**
+    - Guardar estadísticas
+    - Preparar siguiente ciclo
+
+## 🔔 SISTEMA DE NOTIFICACIONES
+
+### Tipos de Notificaciones
+
+1. **Trade Alerts**
+   - Cuando se ejecuta un trade
+   - Info: symbol, side, quantity, price
+
+2. **Error Alerts**
+   - Errores críticos del sistema
+   - Nivel: ERROR o CRITICAL
+
+3. **Daily Summary**
+   - Resumen al final del día
+   - PnL, trades, win rate
+
+4. **Custom Alerts**
+   - Alerts personalizadas según necesidad
+
+### Canales y Uso
+
+- **Telegram**: Todas las notificaciones (default)
+- **Email**: Reportes detallados, resúmenes
+- **SMS**: Solo WARNING+ (críticas)
+- **Pushbullet**: Notificaciones push generales
+
+## 🤖 MACHINE LEARNING
+
+### Modelos de Time Series
+
+**LSTM**:
+- Input: Secuencias de precios históricos (default 60 timesteps)
+- Output: Predicción del siguiente precio
+- Uso: Predicción de tendencias a corto/medio plazo
+
+**ARIMA**:
+- Input: Serie temporal de precios
+- Output: Forecasting N pasos adelante
+- Uso: Análisis de tendencias, estacionalidad
+
+### NLP para News
+
+**FinBERT**:
+- Modelo BERT entrenado en textos financieros
+- Clasificación: positive, negative, neutral
+- Confidence score
+
+**NER (Named Entity Recognition)**:
+- Extracción de entidades (empresas, personas, ubicaciones)
+- Filtrado de noticias relevantes
+
+**Market Sentiment**:
+- Agregación de sentimiento de múltiples noticias
+- Score global: -1 (muy negativo) a +1 (muy positivo)
+
+## 🔒 SEGURIDAD
+
+### Credential Vault
+- Encriptación AES-256
+- Hardware fingerprint
+- Rotación de claves
+
+### API Security
+- Rate limiting
+- Request signing
+- IP whitelist (cuando disponible)
+
+### Cloud Secrets (Futuro)
+- Azure KeyVault
+- AWS Secrets Manager
+
+## 📈 MÉTRICAS Y REPORTES
+
+### Métricas Clave
+- PnL (Profit and Loss)
+- Win Rate
+- Sharpe Ratio
+- Max Drawdown
+- Total Trades
+- Success Rate
+
+### Formatos de Reporte
+- JSON (programático)
+- CSV (análisis)
+- HTML (visualización)
+- Logs (debugging)
+
+## 🧪 TESTING
+
+### Estructura de Tests
+```
+tests/
+├── unit/
+│   ├── test_notifications.py
+│   ├── test_trading.py
+│   ├── test_ml.py
+│   └── ...
+├── integration/
+└── conftest.py
+```
+
+### Comandos
+```bash
+# Run all tests
+pytest
+
+# With coverage
+pytest --cov=shared --cov=trading --cov=notifications --cov=machine_learning
+
+# Specific test
+pytest tests/unit/test_notifications.py
+```
+
+## 🗺️ ROADMAP
+
+### ✅ Fase 1 Completada (Esta Implementación)
+- Modularización completa
+- Integración Alpaca (stocks)
+- Integración Oanda (forex)
+- Sistema completo de notificaciones (Telegram, Email, SMS, Pushbullet)
+- Modelos ML (LSTM, ARIMA, BERT/NLP)
+- Dockerización
+- README y documentación completa
+- .gitignore
+
+### 🚧 Fase 2 En Progreso
+- Interactive Brokers integration
+- Coinbase Advanced Trade
+- Dashboard web (Streamlit/Dash)
+- Backtesting engine mejorado
+- Tests unitarios completos
+
+### 🔮 Fase 3 Futuro
+- Options trading
+- Multi-account management
+- Advanced ML (Reinforcement Learning)
+- Kubernetes deployment
+- API REST para control remoto
+- Mobile app
+
+## 💡 MEJORAS SUGERIDAS PARA PRÓXIMAS ITERACIONES
+
+1. **Testing**
+   - Agregar tests unitarios para todos los módulos nuevos
+   - Tests de integración para brokers
+   - Tests E2E para flujo completo
+
+2. **Dashboard**
+   - Crear dashboard web con Streamlit
+   - Visualización en tiempo real
+   - Control manual de trades
+
+3. **Backtesting**
+   - Mejorar backtesting engine
+   - Walk-forward analysis
+   - Monte Carlo simulation
+
+4. **ML**
+   - Entrenar modelos con datos históricos propios
+   - Implementar model versioning
+   - A/B testing de modelos
+
+5. **Monitoring**
+   - Integrar Prometheus metrics
+   - Grafana dashboards
+   - Alerting avanzado
+
+6. **Documentation**
+   - API documentation (Swagger)
+   - Video tutorials
+   - Examples repository
+
+## 🎓 CONCEPTOS CLAVE PARA ENTENDER EL SISTEMA
+
+### Market Regime
+Estado del mercado: trending (tendencia clara), ranging (lateral), volatile (alta volatilidad)
+
+### Adaptive Strategy
+Estrategias que se ajustan automáticamente según el régimen de mercado y performance
+
+### Position Sizing
+Cálculo del tamaño de posición: Kelly Criterion, Volatility-based, Risk Parity
+
+### Kill-Switch
+Sistema de emergencia que detiene el trading ante condiciones peligrosas
+
+### Paper Trading
+Simulación de trading con dinero virtual para testing
+
+## 📞 COMANDOS ÚTILES
+
+```bash
+# Development
+python main.py --mode paper --capital 10000 --cycles 10 --interval 30
+
+# Production
+python main.py --mode real --capital 5000 --cycles 1000 --interval 60 --ai
+
+# Docker build
+docker build -t trading-bot .
+
+# Docker run
+docker run -d --name bot --env-file .env trading-bot
+
+# Docker Compose
+docker-compose -f docker-compose.prod.yml up -d
+
+# View logs
+docker logs -f bot
+docker-compose -f docker-compose.prod.yml logs -f trading-bot
+
+# Tests
+pytest
+pytest --cov
+pytest -v tests/unit/test_notifications.py
+
+# PyInstaller
+pyinstaller --onefile main.py
+```
+
+## 🔍 TROUBLESHOOTING COMÚN
+
+### Error: "Module not found"
+```bash
+pip install -r requirements.txt
+```
+
+### Error: "TA-Lib not installed"
+Seguir instrucciones de instalación de TA-Lib en README
+
+### Error: "Telegram bot not responding"
+Verificar TELEGRAM_BOT_TOKEN y TELEGRAM_CHAT_ID en .env
+
+### Error: "Alpaca authentication failed"
+Verificar ALPACA_API_KEY y ALPACA_API_SECRET
+
+### Error: "Out of memory"
+Reducir batch size en ML models o limitar número de assets
+
+## 📝 NOTAS IMPORTANTES
+
+1. **NUNCA** commitear .env con credenciales reales
+2. **SIEMPRE** testear en paper mode antes de real trading
+3. **MANTENER** logs para debugging
+4. **MONITOREAR** métricas de performance constantemente
+5. **ACTUALIZAR** documentación cuando se agreguen features
+
+## 🎯 PARA LA PRÓXIMA CONVERSACIÓN
+
+Cuando retomes este proyecto, recuerda:
+
+1. **Estado actual**: Sistema modularizado con todos los componentes base implementados
+2. **Prioridad**: Testing y validación de componentes
+3. **Siguiente paso**: Implementar tests unitarios y de integración
+4. **Pendiente**: Dashboard web para monitoreo
+5. **Futuro**: Interactive Brokers, options trading
+
+---
+
+**Última actualización**: 2026-01-21
+**Versión del documento**: 1.0
+**Autor**: Sistema de Trading Cuantitativo
+
+---
+
+Este documento contiene toda la información necesaria para continuar el desarrollo del sistema en futuras conversaciones. Incluye arquitectura, módulos implementados, configuración, y guía de uso.
