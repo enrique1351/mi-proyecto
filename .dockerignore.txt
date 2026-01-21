@@ -1,0 +1,52 @@
+
+# ============================================================================
+# ARCHIVO 3: .dockerignore
+# Ruta: quant_system/.dockerignore
+# ============================================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data y logs (usar volúmenes)
+data/
+logs/
+*.log
+
+# Git
+.git/
+.gitignore
+
+# Docker
+.dockerignore
+Dockerfile
+docker-compose*.yml
+
+# Docs
+docs/
+*.md
+README.md
+
+# Otros
+.env
+.DS_Store
+*.bak

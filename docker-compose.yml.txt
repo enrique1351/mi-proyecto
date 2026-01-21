@@ -1,0 +1,182 @@
+# ============================================================================
+# ARCHIVO 2: docker-compose.yml
+# Ruta: quant_system/docker-compose.yml
+# ============================================================================
+
+version: '3.8'
+
+services:
+  # Servicio principal de trading
+  trading-system:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: quant-trading-system
+    restart: unless-stopped
+    
+    # Variables de entorno
+    environment:
+      - MODE=paper  # paper | live
+      - LOG_LEVEL=INFO
+      - TZ=UTC
+      
+      # Database
+      - DB_PATH=/app/data/db/trading.db
+      
+      # API Keys (usar secrets en producción)
+      - BINANCE_API_KEY=${BINANCE_API_KEY:-}
+      - BINANCE_API_SECRET=${BINANCE_API_SECRET:-}
+      - COINBASE_API_KEY=${COINBASE_API_KEY:-}
+      - COINBASE_API_SECRET=${COINBASE_API_SECRET:-}
+    
+    # Volúmenes persistentes
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./shared:/app/shared
+      - ./main.py:/app/main.py
+    
+    # Red
+    networks:
+      - trading-network
+    
+    # Recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Dependencias
+    depends_on:
+      - redis
+      - postgres
+  
+  
+  # Redis para cache y message queue
+  redis:
+    image: redis:7-alpine
+    container_name: quant-redis
+    restart: unless-stopped
+    
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-changeme}
+    
+    volumes:
+      - redis-data:/data
+    
+    networks:
+      - trading-network
+    
+    ports:
+      - "6379:6379"
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+  
+  
+  # PostgreSQL para data warehouse (opcional)
+  postgres:
+    image: postgres:15-alpine
+    container_name: quant-postgres
+    restart: unless-stopped
+    
+    environment:
+      - POSTGRES_DB=trading
+      - POSTGRES_USER=trader
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-changeme}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    
+    networks:
+      - trading-network
+    
+    ports:
+      - "5432:5432"
+    
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trader"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+  
+  
+  # Prometheus para métricas (opcional)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: quant-prometheus
+    restart: unless-stopped
+    
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    
+    networks:
+      - trading-network
+    
+    ports:
+      - "9090:9090"
+  
+  
+  # Grafana para visualización (opcional)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: quant-grafana
+    restart: unless-stopped
+    
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_INSTALL_PLUGINS=grafana-clock-panel
+    
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./docker/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./docker/grafana/datasources:/etc/grafana/provisioning/datasources
+    
+    networks:
+      - trading-network
+    
+    ports:
+      - "3000:3000"
+    
+    depends_on:
+      - prometheus
+
+
+# Volúmenes
+volumes:
+  redis-data:
+    driver: local
+  postgres-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+
+
+# Red
+networks:
+  trading-network:
+    driver: bridge

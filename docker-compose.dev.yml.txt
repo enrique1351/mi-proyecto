@@ -1,0 +1,29 @@
+# ============================================================================
+# ARCHIVO 6: docker-compose.dev.yml
+# Ruta: quant_system/docker-compose.dev.yml
+# Configuración para desarrollo
+# ============================================================================
+
+version: '3.8'
+
+services:
+  trading-system:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: development
+    
+    volumes:
+      # Mount todo para hot-reload
+      - .:/app
+    
+    environment:
+      - MODE=paper
+      - LOG_LEVEL=DEBUG
+      - PYTHONPATH=/app
+    
+    command: python main.py --dev
+    
+    ports:
+      - "8000:8000"  # API
+      - "5678:5678"  # Debugger

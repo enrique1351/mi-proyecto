@@ -1,0 +1,143 @@
+2026-01-19 18:53:02,331 - __main__ - INFO - ================================================================================
+2026-01-19 18:53:02,450 - __main__ - INFO - ================================================================================
+2026-01-19 18:53:02,472 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 140, in _initialize_system
+    self.credential_vault = CredentialVault(environment="local")
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: CredentialVault.__init__() got an unexpected keyword argument 'environment'
+2026-01-19 21:30:07,882 - __main__ - INFO - ================================================================================
+2026-01-19 21:30:08,013 - __main__ - INFO - ================================================================================
+2026-01-19 21:30:08,023 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "C:\Users\admin\Desktop\quant_system\main.py", line 140, in _initialize_system
+    self.credential_vault = CredentialVault(environment="local")
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: CredentialVault.__init__() got an unexpected keyword argument 'environment'
+2026-01-19 21:33:53,036 - __main__ - INFO - ================================================================================
+2026-01-19 21:33:53,036 - __main__ - INFO - ================================================================================
+2026-01-19 21:33:53,450 - __main__ - INFO - Registrando assets...
+2026-01-19 21:33:53,463 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 148, in _initialize_system
+    self._register_assets()
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 236, in _register_assets
+    crypto_assets = ASSETS.get('crypto', {}).get('spot', {}).get('majors', [])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'
+2026-01-19 21:36:11,137 - __main__ - INFO - ================================================================================
+2026-01-19 21:36:11,139 - __main__ - INFO - ================================================================================
+2026-01-19 21:36:11,289 - __main__ - INFO - Registrando assets...
+2026-01-19 21:36:11,289 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 156, in _initialize_system
+    self._register_assets()
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 244, in _register_assets
+    crypto_assets = ASSETS.get('crypto', {}).get('spot', {}).get('majors', [])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'
+2026-01-19 21:37:16,158 - __main__ - INFO - ================================================================================
+2026-01-19 21:37:16,158 - __main__ - INFO - ================================================================================
+2026-01-19 21:37:16,294 - __main__ - INFO - Registrando assets...
+2026-01-19 21:37:16,301 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 156, in _initialize_system
+    self._register_assets()
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 246, in _register_assets
+    self.data_manager.register_asset(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataManager' object has no attribute 'register_asset'
+2026-01-19 21:38:43,108 - __main__ - INFO - ================================================================================
+2026-01-19 21:38:43,119 - __main__ - INFO - ================================================================================
+2026-01-19 21:38:43,252 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 161, in _initialize_system
+    self.data_ingestion = DataIngestion(
+                          ^^^^^^^^^^^^^^
+TypeError: DataIngestion.__init__() takes 2 positional arguments but 3 were given
+2026-01-19 21:39:33,227 - __main__ - INFO - ================================================================================
+2026-01-19 21:39:33,230 - __main__ - INFO - ================================================================================
+2026-01-19 21:39:33,367 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 161, in _initialize_system
+    self.data_ingestion = DataIngestion(
+                          ^^^^^^^^^^^^^^
+TypeError: DataIngestion.__init__() takes 2 positional arguments but 3 were given
+2026-01-19 21:40:50,284 - __main__ - INFO - ================================================================================
+2026-01-19 21:40:50,284 - __main__ - INFO - ================================================================================
+2026-01-19 21:40:50,429 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 161, in _initialize_system
+    self.data_ingestion = DataIngestion(
+                          ^^^^^^^^^^^^^^
+TypeError: DataIngestion.__init__() takes 2 positional arguments but 3 were given
+2026-01-19 21:42:33,237 - __main__ - INFO - ================================================================================
+2026-01-19 21:42:33,248 - __main__ - INFO - ================================================================================
+2026-01-19 21:42:33,392 - shared.core.data.data_ingestion - INFO - Provider 'mock' added
+2026-01-19 21:42:33,392 - shared.core.data.data_ingestion - INFO - DataIngestion initialized
+2026-01-19 21:42:33,399 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 166, in _initialize_system
+    assets = self.data_manager.get_assets()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataManager' object has no attribute 'get_assets'
+2026-01-19 21:43:37,825 - __main__ - INFO - ================================================================================
+2026-01-19 21:43:37,843 - __main__ - INFO - ================================================================================
+2026-01-19 21:43:37,971 - shared.core.data.data_ingestion - INFO - Provider 'mock' added
+2026-01-19 21:43:37,971 - shared.core.data.data_ingestion - INFO - DataIngestion initialized
+2026-01-19 21:43:37,982 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 166, in _initialize_system
+    assets = self.data_manager.get_assets()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataManager' object has no attribute 'get_assets'
+2026-01-19 21:44:15,814 - __main__ - INFO - ================================================================================
+2026-01-19 21:44:15,814 - __main__ - INFO - ================================================================================
+2026-01-19 21:44:16,052 - shared.core.data.data_ingestion - INFO - Provider 'mock' added
+2026-01-19 21:44:16,053 - shared.core.data.data_ingestion - INFO - DataIngestion initialized
+2026-01-19 21:44:16,066 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 166, in _initialize_system
+    assets = self.data_manager.get_assets()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataManager' object has no attribute 'get_assets'
+2026-01-19 21:44:34,376 - __main__ - INFO - ================================================================================
+2026-01-19 21:44:34,376 - __main__ - INFO - ================================================================================
+2026-01-19 21:44:34,511 - shared.core.data.data_ingestion - INFO - Provider 'mock' added
+2026-01-19 21:44:34,511 - shared.core.data.data_ingestion - INFO - DataIngestion initialized
+2026-01-19 21:44:34,512 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 166, in _initialize_system
+    assets = self.data_manager.get_assets()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataManager' object has no attribute 'get_assets'
+2026-01-19 21:46:34,626 - __main__ - INFO - ================================================================================
+2026-01-19 21:46:34,626 - __main__ - INFO - ================================================================================
+2026-01-19 21:46:34,767 - shared.core.data.data_ingestion - INFO - Provider 'mock' added
+2026-01-19 21:46:34,767 - shared.core.data.data_ingestion - INFO - DataIngestion initialized
+2026-01-19 21:46:34,767 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 166, in _initialize_system
+    assets = self.data_manager.get_assets()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataManager' object has no attribute 'get_assets'
+2026-01-19 21:48:34,526 - __main__ - INFO - ================================================================================
+2026-01-19 21:48:34,537 - __main__ - INFO - ================================================================================
+2026-01-19 21:48:34,701 - shared.core.data.data_ingestion - INFO - Provider 'mock' added
+2026-01-19 21:48:34,701 - shared.core.data.data_ingestion - INFO - DataIngestion initialized
+2026-01-19 21:48:34,705 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 166, in _initialize_system
+    assets = self.data_manager.get_assets()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataManager' object has no attribute 'get_assets'
+2026-01-19 21:55:21,889 - __main__ - INFO - ================================================================================
+2026-01-19 21:55:21,899 - __main__ - INFO - ================================================================================
+2026-01-19 21:55:22,389 - shared.core.data.data_ingestion - INFO - Provider 'mock' added
+2026-01-19 21:55:22,389 - shared.core.data.data_ingestion - INFO - DataIngestion initialized
+2026-01-19 21:55:22,389 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "c:\Users\admin\Desktop\quant_system\main.py", line 166, in _initialize_system
+    assets = self.data_manager.get_assets()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataManager' object has no attribute 'get_assets'

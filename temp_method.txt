@@ -1,0 +1,10 @@
+﻿    def get_assets(self):
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("SELECT DISTINCT symbol FROM ohlcv_data")
+            symbols = [row[0] for row in cursor.fetchall()]
+            if not symbols:
+                return ['BTCUSDT', 'ETHUSDT', 'BNBUSDT']
+            return symbols
+        except:
+            return ['BTCUSDT', 'ETHUSDT', 'BNBUSDT']
