@@ -1,0 +1,21 @@
+2026-01-21 22:37:36,799 - __main__ - INFO - ================================================================================
+2026-01-21 22:37:36,799 - __main__ - INFO - 🚀 INICIALIZANDO QUANT TRADING SYSTEM
+2026-01-21 22:37:36,799 - __main__ - INFO - ================================================================================
+2026-01-21 22:37:36,799 - __main__ - INFO - 🔐 Inicializando CredentialVault...
+2026-01-21 22:37:37,100 - __main__ - INFO - ✅ CredentialVault listo
+2026-01-21 22:37:37,100 - __main__ - INFO - 📊 Inicializando DataManager...
+2026-01-21 22:37:37,101 - root - INFO - ✓ Tablas de base de datos creadas/verificadas
+2026-01-21 22:37:37,101 - root - INFO - ✓ DataManager inicializado: data/db/market_data.db
+2026-01-21 22:37:37,101 - __main__ - INFO - ✅ DataManager listo
+2026-01-21 22:37:37,101 - __main__ - INFO - 📥 Inicializando DataIngestion...
+2026-01-21 22:37:37,101 - shared.core.data.data_ingestion - INFO - Provider 'mock' added
+2026-01-21 22:37:37,101 - shared.core.data.data_ingestion - INFO - DataIngestion initialized
+2026-01-21 22:37:37,102 - __main__ - INFO - ✅ DataIngestion listo
+2026-01-21 22:37:37,102 - __main__ - INFO - 🎯 Inicializando StrategyEngine...
+2026-01-21 22:37:37,102 - __main__ - ERROR - ❌ Error inicializando sistema: 'DataManager' object has no attribute 'get_assets'
+2026-01-21 22:37:37,102 - __main__ - ERROR - Traceback completo:
+Traceback (most recent call last):
+  File "/home/runner/work/mi-proyecto/mi-proyecto/main.py", line 166, in _initialize_system
+    assets = self.data_manager.get_assets()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataManager' object has no attribute 'get_assets'
