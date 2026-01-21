@@ -442,6 +442,25 @@ class DataManager:
         if self.conn:
             self.conn.close()
             logging.info("✓ Conexión a DB cerrada")
+    
+    def get_assets(self) -> List[str]:
+        """
+        Retorna lista de símbolos únicos disponibles en la base de datos.
+        
+        Returns:
+            Lista de símbolos (strings). Si no hay datos, retorna una lista default.
+        """
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("SELECT DISTINCT symbol FROM ohlcv_data")
+            symbols = [row[0] for row in cursor.fetchall()]
+            if not symbols:
+                # Retornar lista default si la BD está vacía
+                return ['BTCUSDT', 'ETHUSDT', 'BNBUSDT']
+            return symbols
+        except Exception as e:
+            logging.error(f"Error getting assets: {e}")
+            return ['BTCUSDT', 'ETHUSDT', 'BNBUSDT']
 
 
 # ============================================================================
@@ -485,27 +504,3 @@ if __name__ == "__main__":
     
     # Cerrar
     dm.close()
-    
-    def close(self):
-        """Cierra la conexión a la base de datos"""
-        if self.conn:
-            self.conn.close()
-            logging.info("✓ Conexión a DB cerrada")
-    
-    def get_assets(self) -> List[str]:
-        """Retorna lista de símbolos únicos"""
-        try:
-            cursor = self.conn.cursor()
-            cursor.execute("SELECT DISTINCT symbol FROM ohlcv_data")
-            symbols = [row[0] for row in cursor.fetchall()]
-            if not symbols:
-                return ['BTCUSDT', 'ETHUSDT', 'BNBUSDT']
-            return symbols
-        except Exception as e:
-            logging.error(f"Error getting assets: {e}")
-            return ['BTCUSDT', 'ETHUSDT', 'BNBUSDT']
-
-
-# ============================================================================
-# EJEMPLO DE USO
-# ============================================================================

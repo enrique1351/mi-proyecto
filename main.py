@@ -50,7 +50,7 @@ from shared.core.config.constants import ASSETS, TRADING_CONFIG
 # ============================================================================
 
 def setup_logging(log_level: str = "INFO"):
-    """Configura el sistema de logging."""
+    """Configura el sistema de logging con soporte para caracteres Unicode."""
     
     # Crear directorio de logs
     log_dir = Path("data/logs")
@@ -59,14 +59,31 @@ def setup_logging(log_level: str = "INFO"):
     # Formato
     log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     
+    # Crear manejador de archivo con encoding UTF-8
+    file_handler = logging.FileHandler(
+        log_dir / f"system_{datetime.now().strftime('%Y%m%d')}.log",
+        encoding='utf-8'
+    )
+    file_handler.setFormatter(logging.Formatter(log_format))
+    
+    # Crear manejador de consola con manejo de errores de encoding
+    # Para consolas sin soporte UTF-8 (cmd, PowerShell), ignorar errores
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(logging.Formatter(log_format))
+    
+    # Configurar el stream con manejo de errores de encoding
+    if hasattr(sys.stdout, 'reconfigure'):
+        try:
+            # Python 3.7+: Intentar reconfigurar con UTF-8
+            sys.stdout.reconfigure(errors='replace')
+        except Exception:
+            pass
+    
     # Configurar logging
     logging.basicConfig(
         level=getattr(logging, log_level.upper()),
         format=log_format,
-        handlers=[
-            logging.FileHandler(log_dir / f"system_{datetime.now().strftime('%Y%m%d')}.log"),
-            logging.StreamHandler(sys.stdout)
-        ]
+        handlers=[file_handler, console_handler]
     )
     
     # Silenciar logs verbosos de librerías

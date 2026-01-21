@@ -1,0 +1,72 @@
+{
+  "report_type": "daily",
+  "date": "2026-01-21",
+  "timestamp": "2026-01-21T22:39:46.309345",
+  "sections": {
+    "executive_summary": {
+      "timestamp": "2026-01-21T22:39:46.309351",
+      "metrics": {
+        "total_trades": 0,
+        "total_pnl": 0,
+        "avg_pnl_per_trade": 0,
+        "current_capital": 10000.0,
+        "current_drawdown": 0.0,
+        "open_positions": 0,
+        "risk_level": "safe"
+      }
+    },
+    "strategy_performance": {
+      "strategies": {},
+      "top_performers": [],
+      "underperformers": []
+    },
+    "risk_management": {
+      "capital": {
+        "initial": 10000.0,
+        "current": 10000.0,
+        "available": 10000.0,
+        "in_positions": 0,
+        "total_return": 0.0
+      },
+      "positions": {
+        "open": 0,
+        "max_allowed": 20,
+        "details": []
+      },
+      "risk_metrics": {
+        "current_drawdown": 0.0,
+        "max_drawdown": 0.0,
+        "drawdown_duration_days": 0,
+        "risk_level": "safe",
+        "sharpe_ratio": 0.0,
+        "sortino_ratio": 0.0,
+        "var_95": 0.0
+      },
+      "limits": {
+        "max_drawdown": 0.2,
+        "max_position_size": 0.1,
+        "risk_per_trade": 0.02,
+        "max_leverage": 3.0
+      }
+    },
+    "system_health": {
+      "timestamp": "2026-01-21T22:39:46.309514",
+      "overall_status": "unprofitable",
+      "components": {
+        "data_manager": "operational",
+        "strategy_engine": {
+          "status": "operational",
+          "strategies": 4
+        },
+        "adaptive_manager": {
+          "status": "operational",
+          "total_trades": 0,
+          "total_pnl": 0
+        }
+      },
+      "recent_alerts": [],
+      "recommendations": []
+    },
+    "action_log": []
+  }
+}

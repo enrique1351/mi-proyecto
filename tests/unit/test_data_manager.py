@@ -393,6 +393,92 @@ class TestDataManagerPerformance(unittest.TestCase):
         })
 
 
+class TestDataManagerGetAssets(unittest.TestCase):
+    """Tests para el método get_assets"""
+    
+    def setUp(self):
+        """Setup para cada test"""
+        self.test_dir = tempfile.mkdtemp()
+        self.db_path = os.path.join(self.test_dir, 'test.db')
+        self.dm = DataManager(self.db_path)
+    
+    def tearDown(self):
+        """Cleanup después de cada test"""
+        self.dm.close()
+        if os.path.exists(self.test_dir):
+            shutil.rmtree(self.test_dir)
+    
+    def _create_sample_ohlcv(self, n_bars=10):
+        """Crea datos OHLCV de prueba"""
+        dates = pd.date_range(
+            start=datetime.now() - timedelta(days=n_bars),
+            periods=n_bars,
+            freq='h'  # Changed from 'H' to lowercase 'h' for pandas 2.0+
+        )
+        
+        close_prices = 100 + np.cumsum(np.random.randn(n_bars) * 0.5)
+        
+        return pd.DataFrame({
+            'timestamp': dates,
+            'open': close_prices - np.random.rand(n_bars) * 0.5,
+            'high': close_prices + np.random.rand(n_bars) * 1.0,
+            'low': close_prices - np.random.rand(n_bars) * 1.0,
+            'close': close_prices,
+            'volume': np.random.randint(1000, 10000, n_bars)
+        })
+    
+    def test_get_assets_empty_database(self):
+        """Test: get_assets retorna lista default cuando DB está vacía"""
+        assets = self.dm.get_assets()
+        
+        self.assertIsInstance(assets, list)
+        self.assertGreater(len(assets), 0)
+        # Debe retornar la lista default
+        self.assertIn('BTCUSDT', assets)
+        self.assertIn('ETHUSDT', assets)
+    
+    def test_get_assets_with_data(self):
+        """Test: get_assets retorna símbolos guardados"""
+        # Guardar datos para varios símbolos
+        symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'ADAUSDT']
+        sample_data = self._create_sample_ohlcv()
+        
+        for symbol in symbols:
+            self.dm.save_ohlcv(symbol, '1h', sample_data)
+        
+        # Obtener assets
+        assets = self.dm.get_assets()
+        
+        self.assertIsInstance(assets, list)
+        self.assertEqual(len(assets), len(symbols))
+        
+        # Verificar que todos los símbolos estén presentes
+        for symbol in symbols:
+            self.assertIn(symbol, assets)
+    
+    def test_get_assets_unique_symbols(self):
+        """Test: get_assets retorna símbolos únicos (sin duplicados)"""
+        sample_data = self._create_sample_ohlcv()
+        
+        # Guardar el mismo símbolo con diferentes timeframes
+        self.dm.save_ohlcv('BTCUSDT', '1h', sample_data)
+        self.dm.save_ohlcv('BTCUSDT', '5m', sample_data)
+        self.dm.save_ohlcv('BTCUSDT', '1d', sample_data)
+        
+        # Obtener assets
+        assets = self.dm.get_assets()
+        
+        # Debe retornar solo un símbolo (sin duplicados)
+        self.assertEqual(len(assets), 1)
+        self.assertEqual(assets[0], 'BTCUSDT')
+    
+    def test_get_assets_returns_list(self):
+        """Test: get_assets siempre retorna una lista"""
+        assets = self.dm.get_assets()
+        
+        self.assertIsInstance(assets, list)
+
+
 # ============================================================================
 # TEST RUNNER
 # ============================================================================
