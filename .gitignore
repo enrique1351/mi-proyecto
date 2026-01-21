@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+data/logs/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+data/db/
+
+# Temporary files
+*.tmp
+temp_*
+/tmp/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build
+dist/
+build/
+*.egg-info/
+
+# Environment variables
+.env
+.env.local
+
+# Model files (large binary files)
+*.h5
+*.pkl
+*.joblib
+*.model
+*.weights
+
+# Data files (optional - uncomment if needed)
+# data/raw/
+# data/processed/
