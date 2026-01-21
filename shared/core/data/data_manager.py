@@ -26,6 +26,9 @@ class DataManager:
     Gestiona almacenamiento y recuperación de datos de mercado
     """
     
+    # Constante con la lista de activos por defecto
+    DEFAULT_ASSETS = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT']
+    
     def __init__(self, db_path: str = "data/db/trading.db"):
         """
         Inicializa el Data Manager
@@ -456,11 +459,11 @@ class DataManager:
             symbols = [row[0] for row in cursor.fetchall()]
             if not symbols:
                 # Retornar lista default si la BD está vacía
-                return ['BTCUSDT', 'ETHUSDT', 'BNBUSDT']
+                return self.DEFAULT_ASSETS
             return symbols
         except Exception as e:
             logging.error(f"Error getting assets: {e}")
-            return ['BTCUSDT', 'ETHUSDT', 'BNBUSDT']
+            return self.DEFAULT_ASSETS
 
 
 # ============================================================================

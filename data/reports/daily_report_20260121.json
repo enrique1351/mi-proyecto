@@ -1,10 +1,10 @@
 {
   "report_type": "daily",
   "date": "2026-01-21",
-  "timestamp": "2026-01-21T22:40:59.353699",
+  "timestamp": "2026-01-21T22:42:47.142801",
   "sections": {
     "executive_summary": {
-      "timestamp": "2026-01-21T22:40:59.353706",
+      "timestamp": "2026-01-21T22:42:47.142807",
       "metrics": {
         "total_trades": 0,
         "total_pnl": 0,
@@ -50,7 +50,7 @@
       }
     },
     "system_health": {
-      "timestamp": "2026-01-21T22:40:59.353924",
+      "timestamp": "2026-01-21T22:42:47.142970",
       "overall_status": "unprofitable",
       "components": {
         "data_manager": "operational",

@@ -24,8 +24,10 @@ from io import StringIO
 # Agregar path del proyecto
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-# Importar la función setup_logging (necesitamos importarla del main)
-# Para testing, creamos una versión simplificada aquí
+# Nota: Usamos una versión de prueba de setup_logging porque la función real de main.py
+# está diseñada para configuración de aplicación completa y es difícil de aislar en tests.
+# Esta versión de prueba replica la misma lógica para garantizar que los tests validen
+# correctamente el comportamiento de encoding UTF-8 y manejo de errores.
 def setup_logging_test(log_level: str = "INFO", log_dir: Path = None):
     """Versión de prueba de setup_logging con soporte para caracteres Unicode."""
     
@@ -52,7 +54,9 @@ def setup_logging_test(log_level: str = "INFO", log_dir: Path = None):
     if hasattr(sys.stdout, 'reconfigure'):
         try:
             sys.stdout.reconfigure(errors='replace')
-        except Exception:
+        except (AttributeError, OSError):
+            # AttributeError: método no disponible
+            # OSError: operación no soportada en el stream
             pass
     
     # Limpiar handlers existentes

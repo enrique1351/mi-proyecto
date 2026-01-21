@@ -76,7 +76,9 @@ def setup_logging(log_level: str = "INFO"):
         try:
             # Python 3.7+: Intentar reconfigurar con UTF-8
             sys.stdout.reconfigure(errors='replace')
-        except Exception:
+        except (AttributeError, OSError):
+            # AttributeError: método no disponible
+            # OSError: operación no soportada en el stream
             pass
     
     # Configurar logging
