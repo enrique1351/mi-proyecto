@@ -84,10 +84,14 @@ class PredictionEngine:
             # Make prediction
             logger.info(f"Predicting {symbol} price using {model_name}")
             
-            # Mock prediction for now
+            # TODO: Replace with actual model prediction
+            # WARNING: This is a mock implementation for development only
+            # DO NOT use in production without implementing actual model prediction
             current_price = data['close'].iloc[-1]
             predicted_price = current_price * (1 + np.random.randn() * 0.02)
             confidence = 0.75
+            
+            logger.warning(f"Using MOCK prediction - not suitable for production!")
             
             prediction = {
                 'symbol': symbol,

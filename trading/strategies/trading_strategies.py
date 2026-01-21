@@ -245,8 +245,15 @@ class MLEnhancedStrategy(BaseStrategy):
             
             # Get ML prediction
             # TODO: Integrate with actual prediction engine
+            # WARNING: This is a mock implementation
+            if self.prediction_engine is None:
+                logger.error("No prediction engine - cannot generate ML signals")
+                return None
+            
             predicted_change = np.random.randn() * 0.02  # Mock prediction
             confidence = 0.75
+            
+            logger.warning(f"Using MOCK ML prediction - not suitable for production!")
             
             # Generate signal based on prediction
             signal = None

@@ -110,7 +110,7 @@ mi-proyecto/
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/enrique1351/mi-proyecto.git
+git clone <your-repository-url>
 cd mi-proyecto
 
 # Crear entorno virtual

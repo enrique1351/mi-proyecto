@@ -69,28 +69,59 @@ class DataPreparator:
             logger.error(f"Failed to prepare timeseries data: {e}")
             return np.array([]), np.array([])
     
-    def normalize_data(self, data: np.ndarray) -> np.ndarray:
+    def normalize_data(self, data: np.ndarray, fit: bool = True) -> np.ndarray:
         """
-        Normalize data
+        Normalize data using min-max scaling
         
         Args:
             data: Input data
+            fit: Whether to fit the scaler (True) or use existing (False)
             
         Returns:
             Normalized data
+            
+        Note:
+            This is a simple implementation. For production use, consider
+            using sklearn.preprocessing.StandardScaler or MinMaxScaler
+            with proper fit/transform pattern.
         """
         try:
-            # TODO: Implement proper normalization with sklearn
-            # For now, simple min-max scaling
-            data_min = data.min(axis=0)
-            data_max = data.max(axis=0)
-            normalized = (data - data_min) / (data_max - data_min + 1e-8)
+            if fit or self.scaler is None:
+                # Fit the scaler
+                data_min = data.min(axis=0)
+                data_max = data.max(axis=0)
+                self.scaler = {'min': data_min, 'max': data_max}
+            
+            # Transform using saved scaler
+            normalized = (data - self.scaler['min']) / (self.scaler['max'] - self.scaler['min'] + 1e-8)
             
             logger.info("Data normalized")
             return normalized
             
         except Exception as e:
             logger.error(f"Normalization failed: {e}")
+            return data
+    
+    def inverse_normalize(self, data: np.ndarray) -> np.ndarray:
+        """
+        Inverse normalize data back to original scale
+        
+        Args:
+            data: Normalized data
+            
+        Returns:
+            Data in original scale
+        """
+        if self.scaler is None:
+            logger.warning("No scaler fitted - returning data as is")
+            return data
+        
+        try:
+            denormalized = data * (self.scaler['max'] - self.scaler['min'] + 1e-8) + self.scaler['min']
+            logger.info("Data denormalized")
+            return denormalized
+        except Exception as e:
+            logger.error(f"Denormalization failed: {e}")
             return data
     
     def split_data(self, X: np.ndarray, y: np.ndarray,

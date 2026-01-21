@@ -88,9 +88,14 @@ class LSTMModel(BaseMLModel):
             hidden_units: Number of hidden units per layer
             num_layers: Number of LSTM layers
             dropout: Dropout rate
+        
+        Note:
+            This is a placeholder implementation. For production use, implement
+            actual LSTM using TensorFlow/Keras or PyTorch.
         """
         try:
             # TODO: Implement actual LSTM with TensorFlow/PyTorch
+            logger.warning("Building MOCK LSTM model - not suitable for production!")
             logger.info(f"Building LSTM model with {num_layers} layers, {hidden_units} units")
             
             # Placeholder for actual model
