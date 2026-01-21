@@ -91,7 +91,7 @@ class TestDataManagerOHLCV(unittest.TestCase):
         dates = pd.date_range(
             start=datetime.now() - timedelta(days=n_bars),
             periods=n_bars,
-            freq='1H'
+            freq='h'  # Changed from '1H' to 'h' for pandas 2.0+
         )
         
         # Simular precios realistas
@@ -203,7 +203,7 @@ class TestDataManagerQueries(unittest.TestCase):
         dates = pd.date_range(
             start=datetime.now() - timedelta(days=n_bars),
             periods=n_bars,
-            freq='1H'
+            freq='h'  # Changed from '1H' to 'h' for pandas 2.0+
         )
         
         close_prices = 100 + np.cumsum(np.random.randn(n_bars) * 0.5)
@@ -286,7 +286,7 @@ class TestDataManagerEdgeCases(unittest.TestCase):
     def test_save_null_values(self):
         """Test: Manejar valores NULL en datos"""
         df = pd.DataFrame({
-            'timestamp': pd.date_range(start='2024-01-01', periods=5, freq='1H'),
+            'timestamp': pd.date_range(start='2024-01-01', periods=5, freq='h'),  # Changed from '1H' to 'h'
             'open': [100, 101, None, 103, 104],
             'high': [102, 103, 104, 105, None],
             'low': [99, 100, 101, 102, 103],
@@ -306,7 +306,7 @@ class TestDataManagerEdgeCases(unittest.TestCase):
         def write_data(symbol):
             dm = DataManager(self.db_path)
             data = pd.DataFrame({
-                'timestamp': pd.date_range(start='2024-01-01', periods=10, freq='1H'),
+                'timestamp': pd.date_range(start='2024-01-01', periods=10, freq='h'),  # Changed from '1H' to 'h'
                 'open': np.random.rand(10) * 100,
                 'high': np.random.rand(10) * 100,
                 'low': np.random.rand(10) * 100,
@@ -378,7 +378,7 @@ class TestDataManagerPerformance(unittest.TestCase):
         dates = pd.date_range(
             start=datetime(2020, 1, 1),
             periods=n_bars,
-            freq='1H'
+            freq='h'  # Changed from '1H' to 'h' for pandas 2.0+
         )
         
         close_prices = 100 + np.cumsum(np.random.randn(n_bars) * 0.5)
