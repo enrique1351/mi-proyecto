@@ -21,6 +21,7 @@ from datetime import datetime
 from typing import Optional
 
 
+# Configurar encoding UTF-8 en Windows para evitar errores con caracteres especiales
 if sys.platform == 'win32':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
@@ -103,10 +104,10 @@ class QuantTradingSystem:
         Inicializa el sistema completo.
         
         Args:
-            mode: "paper" o "real"
-            initial_capital: Capital inicial
-            use_ai: Habilitar AI Auditor
-            config: Configuración personalizada
+            mode: Modo de ejecución - "paper" para simulación o "real" para trading en vivo
+            initial_capital: Capital inicial en USD para el sistema
+            use_ai: Si es True, habilita el AI Auditor para análisis avanzado
+            config: Diccionario con configuración personalizada (opcional)
         """
         
         logger.info("="*80)
@@ -294,8 +295,18 @@ class QuantTradingSystem:
         """
         Ejecuta un ciclo completo de trading.
         
+        Un ciclo incluye:
+        1. Verificar kill-switch
+        2. Ingerir datos de mercado
+        3. Detectar régimen de mercado
+        4. Generar señales de trading
+        5. Adaptar señales según condiciones
+        6. Filtrar por riesgo
+        7. Ejecutar órdenes
+        8. Auditar con IA
+        
         Returns:
-            True si el ciclo fue exitoso
+            True si el ciclo fue exitoso, False si hubo errores
         """
         
         cycle_num = self.cycles_completed + 1
