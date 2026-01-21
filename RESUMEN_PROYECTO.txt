@@ -272,7 +272,7 @@ mi-proyecto/
 - twilio==8.10.0
 
 ### NLP
-- transformers==4.35.0
+- transformers==4.48.0 (security patched)
 - sentencepiece==0.1.99
 
 ### Security

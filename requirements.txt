@@ -62,7 +62,7 @@ oandapyV20==0.7.2
 twilio==8.10.0
 
 # NLP & Transformers
-transformers==4.35.0
+transformers==4.48.0  # Security fix: CVE - Deserialization of Untrusted Data (was 4.35.0)
 sentencepiece==0.1.99
 
 # Additional ML
