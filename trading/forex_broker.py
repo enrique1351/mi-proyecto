@@ -6,6 +6,7 @@ Integration with Oanda v20 API for forex trading.
 """
 
 import logging
+import requests
 from typing import Dict, List, Optional
 from datetime import datetime
 
@@ -101,8 +102,6 @@ class OandaBroker:
             List of positions
         """
         try:
-            import requests
-            
             response = requests.get(
                 f"{self.base_url}/v3/accounts/{self.account_id}/openPositions",
                 headers=self.headers,
@@ -155,8 +154,6 @@ class OandaBroker:
             Order details or None
         """
         try:
-            import requests
-            
             order_data = {
                 'order': {
                     'type': order_type,
@@ -215,8 +212,6 @@ class OandaBroker:
             List of OHLCV candles
         """
         try:
-            import requests
-            
             params = {
                 'granularity': granularity,
                 'count': count
@@ -262,8 +257,6 @@ class OandaBroker:
             True if closed successfully
         """
         try:
-            import requests
-            
             # Close long position
             response_long = requests.put(
                 f"{self.base_url}/v3/accounts/{self.account_id}/positions/{symbol}/close",

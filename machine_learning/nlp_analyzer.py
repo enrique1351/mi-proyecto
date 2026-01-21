@@ -37,7 +37,13 @@ class NewsAnalyzer:
         self.sentiment_pipeline = None
         self.ner_pipeline = None
         
-        self._initialize_models()
+        # Lazy loading: models will be loaded on first use
+        logger.info("NewsAnalyzer initialized (models will load on first use)")
+    
+    def _ensure_models_loaded(self):
+        """Lazy load NLP models on first use."""
+        if self.sentiment_pipeline is None or self.ner_pipeline is None:
+            self._initialize_models()
     
     def _initialize_models(self):
         """Initialize NLP models."""
@@ -76,6 +82,9 @@ class NewsAnalyzer:
             Dict with sentiment and confidence
         """
         try:
+            # Ensure models are loaded
+            self._ensure_models_loaded()
+            
             # Truncate long text
             if len(text) > 512:
                 text = text[:512]
@@ -144,6 +153,9 @@ class NewsAnalyzer:
             List of entities with type and text
         """
         try:
+            # Ensure models are loaded
+            self._ensure_models_loaded()
+            
             entities = self.ner_pipeline(text)
             
             # Group consecutive tokens

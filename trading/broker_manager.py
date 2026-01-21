@@ -171,6 +171,14 @@ class BrokerManager:
         """
         Place an order with a specific broker.
         
+        NOTE: Different brokers have different parameter names:
+        - Alpaca: qty, side
+        - Oanda: units (positive=buy, negative=sell)
+        - Binance: quantity, side
+        
+        This method normalizes the interface. For broker-specific parameters,
+        use the broker instance directly via get_broker().
+        
         Args:
             broker_type: Broker to use
             symbol: Trading symbol

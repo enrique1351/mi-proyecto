@@ -17,7 +17,8 @@ redis==4.6.0
 
 # Technical Analysis
 ta-lib==0.4.28
-pandas-ta==0.3.14b0
+# pandas-ta==0.3.14b0  # Beta version - consider stable release
+# Alternative: Use ta-lib directly or wait for stable pandas-ta release
 
 # ML & AI
 scikit-learn==1.3.0

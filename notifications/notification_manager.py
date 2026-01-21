@@ -178,12 +178,17 @@ class NotificationManager:
                     continue
                 
                 success = self._send_to_channel(channel, formatted_message, title, level)
-                results[channel] = success
                 
-                if success:
+                # Handle None (skipped) vs False (failed) vs True (success)
+                if success is None:
+                    logger.debug(f"⏭️  Skipped {channel.value} (not applicable for {level.value})")
+                    results[channel] = None
+                elif success:
                     logger.debug(f"✅ Sent to {channel.value}")
+                    results[channel] = True
                 else:
                     logger.warning(f"⚠️ Failed to send to {channel.value}")
+                    results[channel] = False
                     
             except Exception as e:
                 logger.error(f"❌ Error sending to {channel.value}: {e}")
@@ -205,10 +210,13 @@ class NotificationManager:
             elif channel == NotificationChannel.EMAIL:
                 return self.email.send(message, title or "Trading Bot Alert", level)
             elif channel == NotificationChannel.SMS:
-                # Only send SMS for WARNING and above
+                # Only send SMS for WARNING and above to avoid costs
                 if level in [NotificationLevel.WARNING, NotificationLevel.ERROR, NotificationLevel.CRITICAL]:
                     return self.sms.send(message)
-                return True  # Skip INFO messages for SMS
+                else:
+                    # INFO messages skipped for SMS - not considered a failure
+                    logger.debug(f"Skipping SMS for {level.value} message (only WARNING+ sent via SMS)")
+                    return None  # None indicates skipped, not failure
             elif channel == NotificationChannel.PUSHBULLET:
                 return self.pushbullet.send(title or "Trading Bot", message, level)
             else:
