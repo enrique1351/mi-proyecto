@@ -14,7 +14,7 @@ from core_local.strategy_engine import StrategyEngine
 from core_local.adaptive_strategy_manager import AdaptiveStrategyManager
 from core_local.statistics_layer import StatisticsLayer
 from core_local.executor import Executor
-from core_local.brokers import BinanceBroker, CoinbaseBroker
+from core_local.brokers import BinanceBroker
 from core_local.ai_auditor import AIAuditor
 from core_local.risk_manager import RiskManager
 from core_local.market_regime import MarketRegimeDetector
@@ -210,17 +210,6 @@ class TradingSystem:
                 logger.info("✅ Binance broker inicializado")
             else:
                 logger.warning("⚠️  Credenciales de Binance no encontradas")
-            
-            # Coinbase
-            coinbase_key = self.vault.get_credential("COINBASE_API_KEY")
-            coinbase_secret = self.vault.get_credential("COINBASE_API_SECRET")
-            
-            if coinbase_key and coinbase_secret:
-                coinbase = CoinbaseBroker(api_key=coinbase_key, api_secret=coinbase_secret)
-                brokers.append(coinbase)
-                logger.info("✅ Coinbase broker inicializado")
-            else:
-                logger.warning("⚠️  Credenciales de Coinbase no encontradas")
         
         except Exception as e:
             logger.error(f"❌ Error inicializando brokers: {e}")
