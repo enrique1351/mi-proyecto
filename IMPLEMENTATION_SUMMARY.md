@@ -14,7 +14,7 @@
   - Órdenes market y limit
   - Gestión completa de posiciones
 - ✅ **CCXT Broker** - Soporte para 100+ exchanges de criptomonedas
-  - Binance, Coinbase, Kraken, etc.
+  - Binance, Kraken, etc.
   - Testnet y producción
   - API unificada
 - ✅ **Interactive Brokers** - Stub para implementación futura

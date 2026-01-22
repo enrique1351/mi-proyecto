@@ -8,7 +8,6 @@ from .brokers import (
     BrokerType,
     OrderType,
     BinanceBroker,
-    CoinbaseBroker,
     MockBroker,
     BrokerFactory,
     BrokerManager
@@ -19,7 +18,6 @@ __all__ = [
     'BrokerType',
     'OrderType',
     'BinanceBroker',
-    'CoinbaseBroker',
     'MockBroker',
     'BrokerFactory',
     'BrokerManager',

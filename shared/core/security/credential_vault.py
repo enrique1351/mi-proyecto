@@ -118,7 +118,7 @@ class CredentialVault:
         Almacena una credencial en el vault
         
         Args:
-            service: Nombre del servicio (ej: 'binance', 'coinbase')
+            service: Nombre del servicio (ej: 'binance', 'alpaca', 'telegram')
             key: Nombre de la credencial (ej: 'api_key', 'api_secret')
             value: Valor de la credencial
         """
@@ -243,9 +243,9 @@ if __name__ == "__main__":
     vault.set_credential('binance', 'api_key', 'your_binance_api_key_here')
     vault.set_credential('binance', 'api_secret', 'your_binance_secret_here')
     
-    # Guardar credenciales de Coinbase
-    vault.set_credential('coinbase', 'api_key', 'your_coinbase_api_key_here')
-    vault.set_credential('coinbase', 'api_secret', 'your_coinbase_secret_here')
+    # Guardar credenciales de Alpaca
+    vault.set_credential('alpaca', 'api_key', 'your_alpaca_api_key_here')
+    vault.set_credential('alpaca', 'api_secret', 'your_alpaca_secret_here')
     
     # Recuperar credenciales
     binance_key = vault.get_credential('binance', 'api_key')

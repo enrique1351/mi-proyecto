@@ -9,7 +9,7 @@ Fecha: Enero 2025
 Características:
 - Conexiones persistentes WebSocket
 - Auto-reconnection con backoff exponencial
-- Multi-exchange support (Binance, Coinbase, etc.)
+- Multi-exchange support (Binance, Kraken, etc.)
 - Message queuing y buffering
 - Thread-safe operations
 - Health monitoring
@@ -32,7 +32,6 @@ from websockets.exceptions import ConnectionClosed, WebSocketException
 class ExchangeType(Enum):
     """Tipos de exchanges soportados"""
     BINANCE = "binance"
-    COINBASE = "coinbase"
     KRAKEN = "kraken"
     MOCK = "mock"
 
@@ -140,12 +139,6 @@ class WebSocketConnection:
                 "params": [subscription['channel']],
                 "id": int(time.time())
             }
-        elif self.exchange == ExchangeType.COINBASE:
-            return {
-                "type": "subscribe",
-                "channels": [subscription['channel']],
-                "product_ids": subscription.get('symbols', [])
-            }
         else:
             return subscription
     
@@ -236,7 +229,6 @@ class WebSocketManager:
     # URLs de los exchanges
     EXCHANGE_URLS = {
         ExchangeType.BINANCE: "wss://stream.binance.com:9443/ws",
-        ExchangeType.COINBASE: "wss://ws-feed.exchange.coinbase.com",
         ExchangeType.KRAKEN: "wss://ws.kraken.com",
     }
     
@@ -404,11 +396,6 @@ async def handle_binance_trade(message: Dict):
     if 'e' in message and message['e'] == 'trade':
         print(f"TRADE: {message['s']} @ {message['p']} Vol: {message['q']}")
 
-async def handle_coinbase_ticker(message: Dict):
-    """Callback para ticker de Coinbase"""
-    if message.get('type') == 'ticker':
-        print(f"TICKER: {message.get('product_id')} @ {message.get('price')}")
-
 
 if __name__ == "__main__":
     # Crear manager
@@ -417,10 +404,6 @@ if __name__ == "__main__":
     # Añadir conexión Binance
     binance_conn = manager.add_connection('binance_main', ExchangeType.BINANCE)
     manager.register_callback('binance_main', handle_binance_trade)
-    
-    # Añadir conexión Coinbase
-    coinbase_conn = manager.add_connection('coinbase_main', ExchangeType.COINBASE)
-    manager.register_callback('coinbase_main', handle_coinbase_ticker)
     
     # Iniciar manager
     manager.start()
@@ -431,12 +414,6 @@ if __name__ == "__main__":
     # Binance: Trade stream
     manager.subscribe('binance_main', {
         'channel': 'btcusdt@trade'
-    })
-    
-    # Coinbase: Ticker
-    manager.subscribe('coinbase_main', {
-        'channel': 'ticker',
-        'symbols': ['BTC-USD', 'ETH-USD']
     })
     
     # Dejar corriendo

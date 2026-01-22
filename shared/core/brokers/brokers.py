@@ -18,7 +18,6 @@ logger = logging.getLogger(__name__)
 class BrokerType(Enum):
     """Tipos de brokers soportados."""
     BINANCE = "binance"
-    COINBASE = "coinbase"
     KRAKEN = "kraken"
     INTERACTIVE_BROKERS = "interactive_brokers"
     ALPACA = "alpaca"
@@ -372,146 +371,6 @@ class BinanceBroker(BaseBroker):
 
 
 # ============================================================================
-# COINBASE BROKER
-# ============================================================================
-
-class CoinbaseBroker(BaseBroker):
-    """Broker para Coinbase."""
-    
-    def __init__(self, api_key: Optional[str] = None, api_secret: Optional[str] = None,
-                 passphrase: Optional[str] = None, credential_vault: Any = None):
-        super().__init__("Coinbase", BrokerType.COINBASE, credential_vault)
-        
-        self.supported_asset_classes = ["crypto"]
-        self.rate_limit_per_second = 3  # Coinbase es más restrictivo
-        
-        # Obtener credenciales
-        if credential_vault:
-            self.api_key = credential_vault.get_credential("COINBASE_API_KEY")
-            self.api_secret = credential_vault.get_credential("COINBASE_API_SECRET")
-            self.passphrase = credential_vault.get_credential("COINBASE_PASSPHRASE")
-        else:
-            self.api_key = api_key or os.getenv("COINBASE_API_KEY")
-            self.api_secret = api_secret or os.getenv("COINBASE_API_SECRET")
-            self.passphrase = passphrase or os.getenv("COINBASE_PASSPHRASE")
-        
-        if not all([self.api_key, self.api_secret, self.passphrase]):
-            raise ValueError("Coinbase API credentials incompletas")
-        
-        self.client = None
-        self.connect()
-    
-    def connect(self):
-        """Conecta a Coinbase."""
-        try:
-            # Nota: Usar coinbasepro o cbpro para API real
-            # from coinbase.wallet.client import Client
-            # self.client = Client(self.api_key, self.api_secret)
-            
-            # Por ahora, mock connection
-            self.connected = True
-            logger.info("✅ Coinbase conectado exitosamente")
-        
-        except Exception as e:
-            self.connected = False
-            logger.error(f"❌ Error conectando a Coinbase: {e}")
-            raise
-    
-    def get_balance(self) -> Dict[str, float]:
-        """Obtiene balance de Coinbase."""
-        self._rate_limit()
-        self.total_requests += 1
-        
-        try:
-            # Mock implementation
-            logger.info("[Coinbase] get_balance llamado")
-            return {'USD': 10000.0, 'BTC': 0.0}
-        
-        except Exception as e:
-            self._handle_error(e, "get_balance")
-            return {}
-    
-    def get_current_price(self, symbol: str) -> float:
-        """Obtiene precio actual de Coinbase."""
-        self._rate_limit()
-        self.total_requests += 1
-        
-        try:
-            # Mock implementation
-            logger.info(f"[Coinbase] get_current_price({symbol}) llamado")
-            return 50000.0
-        
-        except Exception as e:
-            self._handle_error(e, f"get_current_price({symbol})")
-            return 0.0
-    
-    def place_order(
-        self,
-        symbol: str,
-        side: str,
-        quantity: float,
-        order_type: str = "MARKET",
-        limit_price: Optional[float] = None,
-        stop_price: Optional[float] = None
-    ) -> Dict[str, Any]:
-        """Coloca orden en Coinbase."""
-        self._rate_limit()
-        self.total_requests += 1
-        self.total_orders += 1
-        
-        try:
-            # Mock implementation
-            logger.info(f"[Coinbase] Orden: {side} {quantity} {symbol}")
-            
-            self.successful_orders += 1
-            
-            return {
-                'order_id': f"CB_{int(time.time())}",
-                'symbol': symbol,
-                'side': side,
-                'quantity': quantity,
-                'filled_quantity': quantity,
-                'average_price': limit_price or 50000.0,
-                'status': 'FILLED',
-                'timestamp': int(time.time() * 1000)
-            }
-        
-        except Exception as e:
-            self._handle_error(e, f"place_order({symbol}, {side})")
-            raise
-    
-    def cancel_order(self, order_id: str) -> bool:
-        """Cancela orden en Coinbase."""
-        self._rate_limit()
-        self.total_requests += 1
-        
-        try:
-            logger.info(f"[Coinbase] Cancelando orden {order_id}")
-            return True
-        
-        except Exception as e:
-            self._handle_error(e, f"cancel_order({order_id})")
-            return False
-    
-    def get_order_status(self, order_id: str) -> Dict[str, Any]:
-        """Obtiene estado de orden en Coinbase."""
-        self._rate_limit()
-        self.total_requests += 1
-        
-        try:
-            return {
-                'order_id': order_id,
-                'status': 'FILLED',
-                'filled_quantity': 1.0,
-                'remaining_quantity': 0.0
-            }
-        
-        except Exception as e:
-            self._handle_error(e, f"get_order_status({order_id})")
-            return {}
-
-
-# ============================================================================
 # MOCK BROKER (Para Testing)
 # ============================================================================
 
@@ -656,9 +515,6 @@ class BrokerFactory:
         if broker_type == BrokerType.BINANCE:
             return BinanceBroker(credential_vault=credential_vault, **kwargs)
         
-        elif broker_type == BrokerType.COINBASE:
-            return CoinbaseBroker(credential_vault=credential_vault, **kwargs)
-        
         elif broker_type == BrokerType.ALPACA:
             from .alpaca_broker import AlpacaBroker
             return AlpacaBroker(credential_vault=credential_vault, **kwargs)
@@ -683,7 +539,7 @@ class BrokerFactory:
         Crea un broker CCXT para exchanges de crypto.
         
         Args:
-            exchange_id: ID del exchange ('binance', 'coinbase', 'kraken', etc.)
+            exchange_id: ID del exchange ('binance', 'kraken', etc.)
             credential_vault: Vault de credenciales
             testnet: Usar testnet/sandbox
         
