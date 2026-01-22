@@ -645,7 +645,10 @@ class BrokerFactory:
         Args:
             broker_type: Tipo de broker a crear
             credential_vault: Vault de credenciales
-            **kwargs: Argumentos adicionales
+            **kwargs: Argumentos adicionales para el broker específico
+                - paper_trading: bool (for Alpaca, IB)
+                - exchange_id: str (for CCXT, e.g., 'binance', 'kraken')
+                - testnet: bool (for CCXT)
         
         Returns:
             Instancia de broker
@@ -656,11 +659,43 @@ class BrokerFactory:
         elif broker_type == BrokerType.COINBASE:
             return CoinbaseBroker(credential_vault=credential_vault, **kwargs)
         
+        elif broker_type == BrokerType.ALPACA:
+            from .alpaca_broker import AlpacaBroker
+            return AlpacaBroker(credential_vault=credential_vault, **kwargs)
+        
+        elif broker_type == BrokerType.INTERACTIVE_BROKERS:
+            from .ib_broker import InteractiveBrokersBroker
+            return InteractiveBrokersBroker(credential_vault=credential_vault, **kwargs)
+        
         elif broker_type == BrokerType.MOCK:
             return MockBroker(**kwargs)
         
         else:
             raise ValueError(f"Broker type {broker_type} no soportado")
+    
+    @staticmethod
+    def create_ccxt_broker(
+        exchange_id: str,
+        credential_vault: Any = None,
+        testnet: bool = True
+    ) -> BaseBroker:
+        """
+        Crea un broker CCXT para exchanges de crypto.
+        
+        Args:
+            exchange_id: ID del exchange ('binance', 'coinbase', 'kraken', etc.)
+            credential_vault: Vault de credenciales
+            testnet: Usar testnet/sandbox
+        
+        Returns:
+            Instancia de CCXTBroker
+        """
+        from .ccxt_broker import CCXTBroker
+        return CCXTBroker(
+            exchange_id=exchange_id,
+            credential_vault=credential_vault,
+            testnet=testnet
+        )
 
 
 # ============================================================================
