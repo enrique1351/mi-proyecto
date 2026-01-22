@@ -10,7 +10,7 @@ Sistema de trading cuantitativo modular, robusto y escalable con soporte para m�
 
 ### Brokers Soportados
 - **Alpaca** - Acciones y ETFs de EE.UU.
-- **CCXT** - 100+ exchanges de criptomonedas (Binance, Coinbase, Kraken, etc.)
+- **CCXT** - 100+ exchanges de criptomonedas (Binance, Kraken, etc.)
 - **Interactive Brokers** - Acciones, opciones, futuros, forex (stub para implementación futura)
 - **Mock Broker** - Simulación para pruebas
 

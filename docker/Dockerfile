@@ -86,8 +86,10 @@ services:
       # API Keys (usar secrets en producción)
       - BINANCE_API_KEY=${BINANCE_API_KEY:-}
       - BINANCE_API_SECRET=${BINANCE_API_SECRET:-}
-      - COINBASE_API_KEY=${COINBASE_API_KEY:-}
-      - COINBASE_API_SECRET=${COINBASE_API_SECRET:-}
+      - ALPACA_API_KEY=${ALPACA_API_KEY:-}
+      - ALPACA_API_SECRET=${ALPACA_API_SECRET:-}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
     
     # Volúmenes persistentes
     volumes:
@@ -386,9 +388,13 @@ POSTGRES_PASSWORD=changeme
 BINANCE_API_KEY=your_binance_api_key
 BINANCE_API_SECRET=your_binance_api_secret
 
-# API Keys - Coinbase
-COINBASE_API_KEY=your_coinbase_api_key
-COINBASE_API_SECRET=your_coinbase_api_secret
+# API Keys - Alpaca
+ALPACA_API_KEY=your_alpaca_api_key
+ALPACA_API_SECRET=your_alpaca_api_secret
+
+# API Keys - Telegram
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+TELEGRAM_CHAT_ID=your_telegram_chat_id
 
 # API Keys - Interactive Brokers
 IB_HOST=127.0.0.1
