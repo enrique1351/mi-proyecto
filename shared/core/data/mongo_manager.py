@@ -31,7 +31,7 @@ class MongoDBManager:
         database: str = "trading_db",
         username: Optional[str] = None,
         password: Optional[str] = None,
-        credential_vault: Optional[any] = None
+        credential_vault: Optional[Any] = None
     ):
         """
         Initialize MongoDB manager

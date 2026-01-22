@@ -4,7 +4,7 @@ Real-time alerts via Telegram Bot API
 """
 
 import logging
-from typing import Optional, List
+from typing import Optional, List, Any
 from datetime import datetime
 
 try:
@@ -27,7 +27,7 @@ class TelegramNotifier:
         self,
         bot_token: Optional[str] = None,
         chat_id: Optional[str] = None,
-        credential_vault: Optional[any] = None
+        credential_vault: Optional[Any] = None
     ):
         """
         Initialize Telegram notifier

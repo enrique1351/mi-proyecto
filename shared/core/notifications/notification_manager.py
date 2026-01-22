@@ -4,7 +4,7 @@ Unified interface for multi-channel notifications
 """
 
 import logging
-from typing import Optional, List
+from typing import Optional, List, Any
 from enum import Enum
 from datetime import datetime
 
@@ -25,7 +25,7 @@ class NotificationManager:
     Unified notification manager supporting multiple channels
     """
     
-    def __init__(self, credential_vault: Optional[any] = None):
+    def __init__(self, credential_vault: Optional[Any] = None):
         """
         Initialize notification manager
         

@@ -32,7 +32,7 @@ class PostgreSQLManager:
         database: str = "trading_db",
         username: Optional[str] = None,
         password: Optional[str] = None,
-        credential_vault: Optional[any] = None
+        credential_vault: Optional[Any] = None
     ):
         """
         Initialize PostgreSQL manager
@@ -234,26 +234,31 @@ class PostgreSQLManager:
             return pd.DataFrame()
         
         try:
-            # Build query
-            query = f"""
+            # Build parameterized query to prevent SQL injection
+            query = """
                 SELECT timestamp, open, high, low, close, volume
                 FROM ohlcv_data
-                WHERE symbol = '{symbol}' AND timeframe = '{timeframe}'
+                WHERE symbol = %(symbol)s AND timeframe = %(timeframe)s
             """
             
+            params = {'symbol': symbol, 'timeframe': timeframe}
+            
             if start_date:
-                query += f" AND timestamp >= '{start_date}'"
+                query += " AND timestamp >= %(start_date)s"
+                params['start_date'] = start_date
             
             if end_date:
-                query += f" AND timestamp <= '{end_date}'"
+                query += " AND timestamp <= %(end_date)s"
+                params['end_date'] = end_date
             
             query += " ORDER BY timestamp ASC"
             
             if limit:
-                query += f" LIMIT {limit}"
+                query += " LIMIT %(limit)s"
+                params['limit'] = limit
             
-            # Execute query
-            df = pd.read_sql(query, self.engine)
+            # Execute query with parameters
+            df = pd.read_sql(query, self.engine, params=params)
             
             self.queries_executed += 1
             logger.debug(f"✅ Retrieved {len(df)} OHLCV bars for {symbol} ({timeframe})")
@@ -321,22 +326,27 @@ class PostgreSQLManager:
         
         try:
             query = "SELECT * FROM trades WHERE 1=1"
+            params = {}
             
             if symbol:
-                query += f" AND symbol = '{symbol}'"
+                query += " AND symbol = %(symbol)s"
+                params['symbol'] = symbol
             
             if strategy:
-                query += f" AND strategy = '{strategy}'"
+                query += " AND strategy = %(strategy)s"
+                params['strategy'] = strategy
             
             if start_date:
-                query += f" AND timestamp >= '{start_date}'"
+                query += " AND timestamp >= %(start_date)s"
+                params['start_date'] = start_date
             
             if end_date:
-                query += f" AND timestamp <= '{end_date}'"
+                query += " AND timestamp <= %(end_date)s"
+                params['end_date'] = end_date
             
             query += " ORDER BY timestamp DESC"
             
-            df = pd.read_sql(query, self.engine)
+            df = pd.read_sql(query, self.engine, params=params if params else None)
             self.queries_executed += 1
             return df
             

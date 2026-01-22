@@ -4,7 +4,7 @@ SMS alerts via Twilio API
 """
 
 import logging
-from typing import Optional
+from typing import Optional, Any
 from datetime import datetime
 
 try:
@@ -28,7 +28,7 @@ class TwilioNotifier:
         auth_token: Optional[str] = None,
         from_number: Optional[str] = None,
         to_number: Optional[str] = None,
-        credential_vault: Optional[any] = None
+        credential_vault: Optional[Any] = None
     ):
         """
         Initialize Twilio notifier
