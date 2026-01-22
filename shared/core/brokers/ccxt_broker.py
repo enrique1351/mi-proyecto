@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class CCXTBroker(BaseBroker):
     """
     CCXT broker integration for cryptocurrency exchanges
-    Supports: Binance, Coinbase, Kraken, and 100+ exchanges
+    Supports: Binance, Kraken, and 100+ exchanges
     """
     
     def __init__(
@@ -35,7 +35,7 @@ class CCXTBroker(BaseBroker):
         Initialize CCXT broker
         
         Args:
-            exchange_id: Exchange identifier (e.g., 'binance', 'coinbase', 'kraken')
+            exchange_id: Exchange identifier (e.g., 'binance', 'kraken')
             credential_vault: Vault with API credentials
             testnet: Use testnet/sandbox (default: True)
         """

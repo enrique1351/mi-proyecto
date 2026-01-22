@@ -346,14 +346,6 @@ BROKER_CONFIG = {
         'rate_limit': 1200,  # requests per minute
     },
     
-    'coinbase': {
-        'enabled': True,
-        'sandbox': True,
-        'api_url': 'https://api-public.sandbox.exchange.coinbase.com',
-        'websocket_url': 'wss://ws-feed-public.sandbox.exchange.coinbase.com',
-        'rate_limit': 10,  # requests per second
-    },
-    
     'interactive_brokers': {
         'enabled': False,
         'paper': True,
@@ -363,7 +355,7 @@ BROKER_CONFIG = {
     },
     
     'alpaca': {
-        'enabled': False,
+        'enabled': True,
         'paper': True,
         'api_url': 'https://paper-api.alpaca.markets',
         'data_url': 'https://data.alpaca.markets',

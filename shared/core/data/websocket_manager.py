@@ -9,7 +9,7 @@ Fecha: Enero 2025
 Características:
 - Conexiones persistentes WebSocket
 - Auto-reconnection con backoff exponencial
-- Multi-exchange support (Binance, Coinbase, etc.)
+- Multi-exchange support (Binance, Kraken, etc.)
 - Message queuing y buffering
 - Thread-safe operations
 - Health monitoring
@@ -32,7 +32,6 @@ from websockets.exceptions import ConnectionClosed, WebSocketException
 class ExchangeType(Enum):
     """Tipos de exchanges soportados"""
     BINANCE = "binance"
-    COINBASE = "coinbase"
     KRAKEN = "kraken"
     MOCK = "mock"
 
